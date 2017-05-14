@@ -4,6 +4,9 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
     [SerializeField] float speed = 5f;
+    [SerializeField] GameObject laser;
+    [SerializeField] float laserSpeed = 10f;
+    [SerializeField] float firingRate = 0.2f;
     float xMin, xMax;
 
     Rigidbody2D rb;
@@ -21,11 +24,25 @@ public class Player : MonoBehaviour {
         xMax = rightMost.x - padding;
     }
     
+    void Fire() {
+        GameObject laz = Instantiate(laser, transform.position, Quaternion.identity) as GameObject;
+        laz.GetComponent<Rigidbody2D>().velocity = laserSpeed * Vector3.up; 
+    }
+
     // Update is called once per frame
     void Update () {
-        Vector3 pos = rb.transform.position;
+        // Check for movement
         float moveX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+        Vector3 pos = rb.transform.position;
         pos.x = Mathf.Clamp(pos.x + moveX, xMin, xMax);
         rb.transform.position = pos;
+
+        // Check for fire
+        if (Input.GetButtonDown("Fire1")) {
+            InvokeRepeating("Fire", .00000001f, firingRate);
+        }
+        if (Input.GetButtonUp("Fire1")) {
+            CancelInvoke("Fire");
+        }
     }
 }
