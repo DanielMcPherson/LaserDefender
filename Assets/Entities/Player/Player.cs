@@ -7,6 +7,7 @@ public class Player : MonoBehaviour {
     [SerializeField] GameObject laser;
     [SerializeField] float laserSpeed = 10f;
     [SerializeField] float firingRate = 0.2f;
+    [SerializeField] float health = 250; 
     float xMin, xMax;
 
     Rigidbody2D rb;
@@ -45,4 +46,22 @@ public class Player : MonoBehaviour {
             CancelInvoke("Fire");
         }
     }
+
+    /// <summary>
+    /// Sent when another object enters a trigger collider attached to this
+    /// object (2D physics only).
+    /// </summary>
+    /// <param name="other">The other Collider2D involved in this collision.</param>
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Projectile laser = other.GetComponent<Projectile>();
+        if (laser) {
+            health -= laser.GetDamage();
+            laser.Hit();
+            if (health <= 0f) {
+                Destroy(gameObject);
+            }
+        }
+    }
+
 }
