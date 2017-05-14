@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
+    [SerializeField] GameObject laser;
+    [SerializeField] float laserSpeed = 10f;
     public float health = 250;
 
     // Use this for initialization
@@ -12,7 +14,8 @@ public class Enemy : MonoBehaviour {
     
     // Update is called once per frame
     void Update () {
-    
+        GameObject laz = Instantiate(laser, transform.position, Quaternion.identity) as GameObject;
+        laz.GetComponent<Rigidbody2D>().velocity = laserSpeed * Vector3.down;
     }
 
     /// <summary>
