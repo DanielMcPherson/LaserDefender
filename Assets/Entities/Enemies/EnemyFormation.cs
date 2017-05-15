@@ -4,6 +4,7 @@ using System.Collections;
 public class EnemyFormation : MonoBehaviour {
 
     [SerializeField] GameObject enemy;
+    [SerializeField] float spawnDelay = 0.5f;
     [SerializeField] float width = 10f;
     [SerializeField] float height = 5f;
     [SerializeField] float speed = 5f;
@@ -21,11 +22,25 @@ public class EnemyFormation : MonoBehaviour {
     }
 
     private void SpawnFormation() {
-        if (enemy) {
-            foreach (Transform child in transform) {
-                GameObject thisEnemy = Instantiate(enemy, child.transform.position, Quaternion.identity) as GameObject;
-                thisEnemy.transform.parent = child.transform;
-            }
+        SpawnUntilFull();
+        // if (enemy) {
+        //     foreach (Transform child in transform) {
+        //         GameObject thisEnemy = Instantiate(enemy, child.transform.position, Quaternion.identity) as GameObject;
+        //         thisEnemy.transform.parent = child.transform;
+        //     }
+        // }
+    }
+
+    void SpawnUntilFull() {
+        Transform freePosition = NextFreePosition();
+        if (freePosition) {
+            GameObject thisEnemy = Instantiate(enemy, freePosition.position, Quaternion.identity) as GameObject;
+            thisEnemy.transform.parent = freePosition;
+        }
+        // If there are still empty spawn positions, call this function again
+        // after a delay.
+        if (NextFreePosition()) {
+            Invoke("SpawnUntilFull", spawnDelay);
         }
     }
 
@@ -51,6 +66,15 @@ public class EnemyFormation : MonoBehaviour {
             print("All enemies are dead");
             SpawnFormation();
         }
+    }
+
+    Transform NextFreePosition() {
+        foreach (Transform enemyPosition in transform) {
+            if (enemyPosition.childCount == 0) {
+                return enemyPosition;
+            }
+        }
+        return null;
     }
 
     bool AllMembersDead() {
