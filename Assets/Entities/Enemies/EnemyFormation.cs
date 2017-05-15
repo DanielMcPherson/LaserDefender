@@ -10,20 +10,25 @@ public class EnemyFormation : MonoBehaviour {
     float xMin, xMax;
 
     // Use this for initialization
-    void Start () {
-        if (enemy) {
-            foreach (Transform child in transform) {
-                GameObject thisEnemy = Instantiate(enemy, child.transform.position, Quaternion.identity) as GameObject;
-                thisEnemy.transform.parent = child.transform;                
-            }
-        }
+    void Start ()
+    {
+        SpawnFormation();
         float cameraDistance = transform.position.z - Camera.main.transform.position.z;
         Vector3 leftMost = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, cameraDistance));
         Vector3 rightMost = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, cameraDistance));
         xMin = leftMost.x + width / 2;
         xMax = rightMost.x - width / 2;
     }
-    
+
+    private void SpawnFormation() {
+        if (enemy) {
+            foreach (Transform child in transform) {
+                GameObject thisEnemy = Instantiate(enemy, child.transform.position, Quaternion.identity) as GameObject;
+                thisEnemy.transform.parent = child.transform;
+            }
+        }
+    }
+
     /// <summary>
     /// Callback to draw gizmos that are pickable and always drawn.
     /// </summary>
@@ -31,6 +36,7 @@ public class EnemyFormation : MonoBehaviour {
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(width, height, 0));
     }
+
     // Update is called once per frame
     void Update () {
         transform.position += speed * Time.deltaTime * Vector3.right;
@@ -43,6 +49,7 @@ public class EnemyFormation : MonoBehaviour {
         // See if all the enemies in this formation are dead
         if (AllMembersDead()) {
             print("All enemies are dead");
+            SpawnFormation();
         }
     }
 
