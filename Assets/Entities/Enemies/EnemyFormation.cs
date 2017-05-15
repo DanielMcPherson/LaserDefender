@@ -39,5 +39,25 @@ public class EnemyFormation : MonoBehaviour {
         } else if (speed < 0 && transform.position.x < xMin) {
             speed *= -1;
         }
+
+        // See if all the enemies in this formation are dead
+        if (AllMembersDead()) {
+            print("All enemies are dead");
+        }
+    }
+
+    bool AllMembersDead() {
+        // Loop through all of the child transforms of the formation.
+        // Each chlld will either have an enemy child of its own,
+        // or will have no children.
+        foreach (Transform enemyPosition in transform) {
+            if (enemyPosition.childCount > 0) {
+                // Found an enemy in this position. Not all dead.
+                return false;
+            }
+        }
+        // Didn't find any child transforms that contained an enemy.
+        // All enemies are dead.
+        return true;
     }
 }
