@@ -8,9 +8,11 @@ public class Enemy : MonoBehaviour {
     [SerializeField] float shotsPerSecond = 0.5f;
     public float health = 250;
 
+    Animator anim;
+
     // Use this for initialization
     void Start () {
-    
+        anim = GetComponent<Animator>();
     }
     
     // Update is called once per frame
@@ -40,6 +42,9 @@ public class Enemy : MonoBehaviour {
         if (laser) {
             health -= laser.GetDamage();
             laser.Hit();
+            if (anim) {
+                anim.SetTrigger("Hit");
+            }
             if (health <= 0f) {
                 Destroy(gameObject);
             }
