@@ -8,7 +8,9 @@ public class Player : MonoBehaviour {
     [SerializeField] float laserSpeed = 10f;
     [SerializeField] float firingRate = 0.2f;
     [SerializeField] float health = 250; 
+    [SerializeField] GameObject smokePrefab;
     float xMin, xMax;
+    GameObject smoke = null;
 
     Rigidbody2D rb;
 
@@ -23,6 +25,8 @@ public class Player : MonoBehaviour {
         Vector3 rightMost = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, cameraDistance));
         xMin = leftMost.x + padding;
         xMax = rightMost.x - padding;
+
+        smoke = null;
     }
     
     void Fire() {
@@ -58,6 +62,12 @@ public class Player : MonoBehaviour {
         if (laser) {
             health -= laser.GetDamage();
             laser.Hit();
+            if (smokePrefab) {
+                if (!smoke) {
+                    smoke = Instantiate(smokePrefab, transform.position, Quaternion.identity) as GameObject;
+                    smoke.transform.parent = transform;
+                }
+            }
             if (health <= 0f) {
                 Destroy(gameObject);
             }
