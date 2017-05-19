@@ -7,12 +7,15 @@ public class Enemy : MonoBehaviour {
     [SerializeField] float laserSpeed = 10f;
     [SerializeField] float shotsPerSecond = 0.5f;
     public float health = 250;
+    [SerializeField] int scoreValue = 150;
+    ScoreKeeper scoreKeeper;
 
     Animator anim;
 
     // Use this for initialization
     void Start () {
         anim = GetComponent<Animator>();
+        scoreKeeper = GameObject.Find("Score").GetComponent<ScoreKeeper>();
     }
     
     // Update is called once per frame
@@ -46,6 +49,7 @@ public class Enemy : MonoBehaviour {
                 anim.SetTrigger("Hit");
             }
             if (health <= 0f) {
+                scoreKeeper.Score(scoreValue);
                 Destroy(gameObject);
             }
         }
