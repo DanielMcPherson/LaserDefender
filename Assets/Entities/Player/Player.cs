@@ -15,10 +15,12 @@ public class Player : MonoBehaviour {
     GameObject smoke = null;
 
     Rigidbody2D rb;
+    LevelManager levelManager;
 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
         float padding = GetComponent<SpriteRenderer>().bounds.extents.x;
 
@@ -74,6 +76,7 @@ public class Player : MonoBehaviour {
                 if (deadSound) {
                     AudioSource.PlayClipAtPoint(deadSound, transform.position);
                 }
+                levelManager.LoadNextLevelAfterDelay(4.0f);
                 Destroy(gameObject);
             } else {
                 if (hitSound) {
@@ -83,5 +86,4 @@ public class Player : MonoBehaviour {
             }
         }
     }
-
 }

@@ -11,6 +11,10 @@ public class LevelManager : MonoBehaviour {
         Application.LoadLevel(Application.loadedLevel + 1);
     }
     
+    public void LoadNextLevelAfterDelay(float delay) {
+        Invoke("LoadNextLevel", delay);
+    }
+
     public void Quit() {
         print("User asked to quit");
         //Application.Quit();
