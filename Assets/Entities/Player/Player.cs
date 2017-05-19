@@ -9,6 +9,8 @@ public class Player : MonoBehaviour {
     [SerializeField] float firingRate = 0.2f;
     [SerializeField] float health = 250; 
     [SerializeField] GameObject smokePrefab;
+    [SerializeField] GameObject hurtEffect;
+    [SerializeField] GameObject deadEffect;
     [SerializeField] AudioClip hitSound;
     [SerializeField] AudioClip deadSound;
     float xMin, xMax;
@@ -66,6 +68,10 @@ public class Player : MonoBehaviour {
         if (laser) {
             health -= laser.GetDamage();
             laser.Hit();
+            if (hurtEffect) {
+                GameObject hurt = Instantiate(hurtEffect, transform.position, Quaternion.identity) as GameObject;
+                hurt.transform.parent = transform;
+            }
             if (smokePrefab) {
                 if (!smoke) {
                     smoke = Instantiate(smokePrefab, transform.position, Quaternion.identity) as GameObject;
