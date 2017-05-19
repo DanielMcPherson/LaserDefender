@@ -79,6 +79,9 @@ public class Player : MonoBehaviour {
                 }
             }
             if (health <= 0f) {
+                if (deadEffect) {
+                    Instantiate(deadEffect, transform.position, Quaternion.identity);
+                }
                 if (deadSound) {
                     AudioSource.PlayClipAtPoint(deadSound, transform.position);
                 }
