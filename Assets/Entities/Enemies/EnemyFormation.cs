@@ -63,7 +63,6 @@ public class EnemyFormation : MonoBehaviour {
 
         // See if all the enemies in this formation are dead
         if (AllMembersDead()) {
-            print("All enemies are dead");
             SpawnFormation();
         }
     }

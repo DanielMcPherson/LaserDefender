@@ -11,6 +11,8 @@ public class Enemy : MonoBehaviour {
     ScoreKeeper scoreKeeper;
 
     Animator anim;
+    [SerializeField] AudioClip hitSound;
+    [SerializeField] AudioClip deadSound;
 
     // Use this for initialization
     void Start () {
@@ -50,7 +52,14 @@ public class Enemy : MonoBehaviour {
             }
             if (health <= 0f) {
                 scoreKeeper.Score(scoreValue);
+                if (deadSound) {
+                    AudioSource.PlayClipAtPoint(deadSound, transform.position);
+                }
                 Destroy(gameObject);
+            } else {
+                if (hitSound) {
+                    AudioSource.PlayClipAtPoint(hitSound, transform.position);
+                }
             }
         }
     }

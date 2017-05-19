@@ -9,6 +9,8 @@ public class Player : MonoBehaviour {
     [SerializeField] float firingRate = 0.2f;
     [SerializeField] float health = 250; 
     [SerializeField] GameObject smokePrefab;
+    [SerializeField] AudioClip hitSound;
+    [SerializeField] AudioClip deadSound;
     float xMin, xMax;
     GameObject smoke = null;
 
@@ -69,7 +71,15 @@ public class Player : MonoBehaviour {
                 }
             }
             if (health <= 0f) {
+                if (deadSound) {
+                    AudioSource.PlayClipAtPoint(deadSound, transform.position);
+                }
                 Destroy(gameObject);
+            } else {
+                if (hitSound) {
+                    print("Player hit");
+                    AudioSource.PlayClipAtPoint(hitSound, transform.position);
+                }
             }
         }
     }
