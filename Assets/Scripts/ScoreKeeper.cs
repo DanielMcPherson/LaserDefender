@@ -7,11 +7,12 @@ public class ScoreKeeper : MonoBehaviour {
     static int score = 0;
     Text text;
 
-    public void Reset() {
+    public static void Reset() {
         score = 0;
-        if (text) {
-            text.text = score.ToString();
-        }
+   }
+
+    public static int GetScore() {
+        return score;
     }
 
     public void Score(int points) {
