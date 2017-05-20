@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour {
     Animator anim;
     [SerializeField] AudioClip hitSound;
     [SerializeField] AudioClip deadSound;
+    [SerializeField] GameObject hurtEffect;
+    [SerializeField] GameObject deadEffect;
 
     // Use this for initialization
     void Start () {
@@ -50,8 +52,15 @@ public class Enemy : MonoBehaviour {
             if (anim) {
                 anim.SetTrigger("Hit");
             }
+            if (hurtEffect) {
+                GameObject hurt = Instantiate(hurtEffect, transform.position, Quaternion.identity) as GameObject;
+                hurt.transform.parent = transform;
+            }
             if (health <= 0f) {
                 scoreKeeper.Score(scoreValue);
+                if (deadEffect) {
+                    Instantiate(deadEffect, transform.position, Quaternion.identity);
+                }
                 if (deadSound) {
                     AudioSource.PlayClipAtPoint(deadSound, transform.position);
                 }
